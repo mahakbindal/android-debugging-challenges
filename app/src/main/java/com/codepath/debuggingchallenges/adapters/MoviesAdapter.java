@@ -38,6 +38,23 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
             tvRating = itemView.findViewById(R.id.tvRating);
             ivPoster = itemView.findViewById(R.id.ivPoster);
         }
+
+        public void bind(Movie movie) {
+            tvName.setText(movie.getTitle());
+
+            Resources resources = tvName.getResources();
+            double movieRating = movie.getRating();
+
+            if (movieRating > 6) {
+                view.setBackgroundColor(Color.GREEN);
+            }
+
+            String ratingText = String.format(resources.getString(R.string.rating), movieRating);
+            tvRating.setText(ratingText);
+
+            Glide.with(ivPoster.getContext()).load(movie.getPosterUrl()).into(
+                    ivPoster);
+        }
     }
 
     public MoviesAdapter(List<Movie> movies) {
@@ -46,7 +63,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+        return movies.size();
     }
 
     @NonNull
@@ -69,20 +86,22 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         Movie movie = movies.get(position);
 
         // Populate the data into the template view using the data object
-        viewHolder.tvName.setText(movie.getTitle());
+//        viewHolder.tvName.setText(movie.getTitle());
+//
+//        Resources resources = viewHolder.tvName.getResources();
+//        double movieRating = movie.getRating();
+//
+//        if (movieRating > 6) {
+//            viewHolder.view.setBackgroundColor(Color.GREEN);
+//        }
+//
+//        String ratingText = String.format(resources.getString(R.string.rating), movieRating);
+//        viewHolder.tvRating.setText(ratingText);
+//
+//        Glide.with(viewHolder.ivPoster.getContext()).load(movie.getPosterUrl()).into(
+//                viewHolder.ivPoster);
 
-        Resources resources = viewHolder.tvName.getResources();
-        double movieRating = movie.getRating();
-
-        if (movieRating > 6) {
-            viewHolder.view.setBackgroundColor(Color.GREEN);
-        }
-
-        String ratingText = String.format(resources.getString(R.string.rating), movieRating);
-        viewHolder.tvRating.setText(ratingText);
-
-        Glide.with(viewHolder.ivPoster.getContext()).load(movie.getPosterUrl()).into(
-                viewHolder.ivPoster);
+        viewHolder.bind(movie);
 
     }
 }
